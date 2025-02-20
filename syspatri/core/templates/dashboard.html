@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mt-5">Dashboard</h1>
+            <hr>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Bem-vindo, {{ request.user.get_full_name }}</h5>
+                    <p class="card-text">Aqui estão as principais métricas do sistema.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas Principais -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total de Bens</h5>
+                    <p class="card-text display-4">{{ total_bens }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total de Departamentos</h5>
+                    <p class="card-text display-4">{{ total_departamentos }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Manutenções Ativas</h5>
+                    <p class="card-text display-4">{{ total_manutencoes_ativas }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Valor do Patrimônio</h5>
+                    <p class="card-text display-5 ">R$ {{ valor_total_patrimonio|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Bens por Departamento</h5>
+                    <canvas id="graficoBensPorDepartamento"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Bens por Categoria</h5>
+                    <canvas id="graficoBensPorCategoria"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Manutenções Recentes -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manutenções Recentes</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Bem</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for manutencao in manutencoes_recentes %}
+                                <tr>
+                                    <td>{{ manutencao.data_inicio|date:"d/m/Y" }}</td>
+                                    <td>{{ manutencao.bem.nome }}</td>
+                                    <td>
+                                        {% if manutencao.data_fim %}
+                                            <span class="badge bg-success">Finalizada</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Em Andamento</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Gráfico de Bens por Departamento
+    const ctxBensPorDepartamento = document.getElementById('graficoBensPorDepartamento').getContext('2d');
+    new Chart(ctxBensPorDepartamento, {
+        type: 'bar',
+        data: {
+            labels: {{ departamentos|safe }},
+            datasets: [{
+                label: 'Quantidade de Bens',
+                data: {{ bens_por_departamento|safe }},
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Gráfico de Bens por Categoria
+    const ctxBensPorCategoria = document.getElementById('graficoBensPorCategoria').getContext('2d');
+    new Chart(ctxBensPorCategoria, {
+        type: 'pie',
+        data: {
+            labels: {{ categorias|safe }},
+            datasets: [{
+                label: 'Quantidade de Bens',
+                data: {{ bens_por_categoria|safe }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+
+    // Gráfico de Histórico de Manutenções
+    const ctxHistoricoManutencoes = document.getElementById('graficoHistoricoManutencoes').getContext('2d');
+    new Chart(ctxHistoricoManutencoes, {
+        type: 'line',
+        data: {
+            labels: {{ meses|safe }},
+            datasets: [{
+                label: 'Manutenções',
+                data: {{ manutencoes_por_mes|safe }},
+                fill: false,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

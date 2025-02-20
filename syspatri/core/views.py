@@ -1,43 +1,75 @@
+from itertools import count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator
+from django.db.models import Count, Sum, Q
 from .models import Usuario
 from .forms import UsuarioCreationForm, UsuarioChangeForm, LoginForm
 from patrimonio.models import Bem, Categoria, Departamento, Fornecedor
 from controle.models import Movimentacao, Manutencao, Auditoria
+from datetime import datetime, timedelta
 
 # -----------------------------views relacionadas ao dashboard-----------------------------
 
 @login_required
 def dashboard(request):
-    """
-    View para exibir o dashboard da aplicação.
-    """
+    # Métricas principais
     total_bens = Bem.objects.count()
-    total_categorias = Categoria.objects.count()
     total_departamentos = Departamento.objects.count()
-    total_fornecedores = Fornecedor.objects.count()
-    total_movimentacoes = Movimentacao.objects.count()
-    total_manutencoes = Manutencao.objects.count()
-    total_auditorias = Auditoria.objects.count()
+    total_manutencoes_ativas = Manutencao.objects.filter(data_fim__isnull=True).count()
+    valor_total_patrimonio = Bem.objects.aggregate(total=Sum('valor'))['total'] or 0
+
+    # Dados para o gráfico de bens por departamento
+    departamentos = Departamento.objects.annotate(total_bens=Count('bem')).values_list('nome', flat=True)
+    bens_por_departamento = Departamento.objects.annotate(total_bens=Count('bem')).values_list('total_bens', flat=True)
+
+    # Dados para o gráfico de bens por categoria
+    categorias = Categoria.objects.annotate(total_bens=Count('bem')).values_list('nome', flat=True)
+    bens_por_categoria = Categoria.objects.annotate(total_bens=Count('bem')).values_list('total_bens', flat=True)
+
+    # Dados para o gráfico de histórico de manutenções
+    meses = []
+    manutencoes_por_mes = []
+    for i in range(12):
+        mes = datetime.now() - timedelta(days=30 * i)
+        total = Manutencao.objects.filter(data_inicio__month=mes.month, data_inicio__year=mes.year).count()
+        meses.append(mes.strftime('%b'))  # Nome abreviado do mês (ex: Jan, Fev)
+        manutencoes_por_mes.append(total)
+    meses.reverse()
+    manutencoes_por_mes.reverse()
+
+    # Manutenções recentes
+    manutencoes_recentes = Manutencao.objects.order_by('-data_inicio')[:10]
 
     context = {
         'total_bens': total_bens,
-        'total_categorias': total_categorias,
         'total_departamentos': total_departamentos,
-        'total_fornecedores': total_fornecedores,
-        'total_movimentacoes': total_movimentacoes,
-        'total_manutencoes': total_manutencoes,
-        'total_auditorias': total_auditorias,
+        'total_manutencoes_ativas': total_manutencoes_ativas,
+        'valor_total_patrimonio': valor_total_patrimonio,
+        'departamentos': list(departamentos),
+        'bens_por_departamento': list(bens_por_departamento),
+        'categorias': list(categorias),
+        'bens_por_categoria': list(bens_por_categoria),
+        'meses': meses,
+        'manutencoes_por_mes': manutencoes_por_mes,
+        'manutencoes_recentes': manutencoes_recentes,
     }
     return render(request, 'dashboard.html', context)
 
 # -----------------------------views relacionadas aos usuários-----------------------------
 
+def is_superuser_or_gerente(user):
+    return user.is_superuser or user.gerente
+
 @login_required
+@user_passes_test(is_superuser_or_gerente, login_url='login')
 def listar_usuarios(request):
+    if not request.user.is_superuser and not request.user.gerente:
+        raise PermissionDenied
     """
     View para listar todos os usuários do sistema.
     """
@@ -48,7 +80,10 @@ def listar_usuarios(request):
     return render(request, 'listar_usuarios.html', {'page_obj': page_obj})
 
 @login_required
+@user_passes_test(is_superuser_or_gerente, login_url='login')
 def adicionar_usuario(request):
+    if not request.user.is_superuser and not request.user.gerente:
+        raise PermissionDenied
     """
     View para adicionar um novo usuário.
     """
@@ -63,7 +98,10 @@ def adicionar_usuario(request):
     return render(request, 'adicionar_usuario.html', {'form': form})
 
 @login_required
+@user_passes_test(is_superuser_or_gerente, login_url='login')
 def atualizar_usuario(request, pk):
+    if not request.user.is_superuser and not request.user.gerente:
+        raise PermissionDenied
     """
     View para editar um usuário existente.
     """
@@ -79,7 +117,10 @@ def atualizar_usuario(request, pk):
     return render(request, 'atualizar_usuario.html', {'form': form, 'usuario': usuario})
 
 @login_required
+@user_passes_test(is_superuser_or_gerente, login_url='login')
 def detalhes_usuario(request, pk):
+    if not request.user.is_superuser and not request.user.gerente:
+        raise PermissionDenied
     """
     View para exibir detalhes de um usuário.
     """
@@ -87,7 +128,10 @@ def detalhes_usuario(request, pk):
     return render(request, 'detalhes_usuario.html', {'usuario': usuario})
 
 @login_required
+@user_passes_test(is_superuser_or_gerente, login_url='login')
 def excluir_usuario(request, pk):
+    if not request.user.is_superuser and not request.user.gerente:
+        raise PermissionDenied
     """
     View para excluir um usuário.
     """
@@ -143,20 +187,4 @@ def perfil_usuario(request):
     else:
         form = UsuarioChangeForm(instance=usuario)
     return render(request, 'perfil.html', {'form': form})
-
-# -----------------------------views relacionadas ao registro de usuários-----------------------------
-
-def registro(request):
-    """
-    View para registro de novos usuários.
-    """
-    if request.method == 'POST':
-        form = UsuarioCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Usuário registrado com sucesso! Faça login para continuar.')
-            return redirect('login')
-    else:
-        form = UsuarioCreationForm()
-    return render(request, 'registro.html', {'form': form})
 

@@ -1,0 +1,24 @@
+{% extends base.html %}
+
+{% block title %}Detalhes da Movimentação{% endblock %}
+
+{% block content %}
+
+    <p></p>
+
+    <h1>Detalhes da Movimentação</h1>
+
+    <ul class="list-group">
+
+        <p class="list-group-item list-group-item-secondary"><strong>Data:</strong> {{ movimentacao.data }}</p>
+        <p class="list-group-item"><strong>Responsável:</strong> {{ movimentacao.responsavel }}</p> 
+        <p class="list-group-item"><strong>Bem:</strong> {{ movimentacao.bem }}</p>
+        <p class="list-group-item"><strong>Departamento de origem:</strong> {{ movimentacao.departamento_origem }}</p>
+        <p class="list-group-item"><strong>Departamento de destino:</strong> {{ movimentacao.departamento_destino }}</p>
+        <p class="list-group-item"><strong>Observação:</strong> {{ movimentacao.observacao }}</p>
+    </ul>
+
+    <a class="btn btn-success" href="{% url 'atualizar_movimentacao' movimentacao.pk %}">Editar Movimentação</a>
+    <a class="btn btn-danger" href="{% url 'listar_movimentacoes' %}">Voltar</a>
+
+{% endblock %}

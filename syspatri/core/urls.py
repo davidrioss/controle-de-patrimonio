@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -9,9 +10,6 @@ urlpatterns = [
     path('login/', views.custom_login, name='login'),
     path('logout/', views.custom_logout, name='logout'),
 
-    # Registro de usuários
-    path('registro/', views.registro, name='registro'),
-
     # Perfil do usuário
     path('perfil/', views.perfil_usuario, name='perfil_usuario'),
 
@@ -21,4 +19,10 @@ urlpatterns = [
     path('usuarios/editar/<int:pk>/', views.atualizar_usuario, name='atualizar_usuario'),
     path('usuarios/detalhes/<int:pk>/', views.detalhes_usuario, name='detalhes_usuario'),
     path('usuarios/excluir/<int:pk>/', views.excluir_usuario, name='excluir_usuario'),
+    
+    # Redefinição de senha
+    path('redefinir-senha/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('redefinir-senha/enviado/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('redefinir-senha/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('redefinir-senha/concluido/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

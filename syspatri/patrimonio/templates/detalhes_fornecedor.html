@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Fornecedor{% endblock %}
+
+{% block content %}
+    <p></p>
+    
+    <h2>Detalhes do Fornecedor</h2>
+
+    <ul class="list-group">
+        <p class="list-group-item list-group-item-secondary"><strong>Nome:</strong> {{ fornecedor.nome }}</p>
+        <p class="list-group-item"><strong>CNPJ:</strong> {{ fornecedor.cnpj }}</p>
+        <p class="list-group-item"><strong>Telefone:</strong> {{ fornecedor.telefone }}</p>
+        <p class="list-group-item"><strong>Email:</strong> {{ fornecedor.email }}</p>
+    </ul>
+    
+    <a class="btn btn-success" href="{% url 'atualizar_fornecedor' fornecedor.pk %}">Editar Fornecedor</a>
+    <a class="btn btn-danger" href="{% url 'listar_fornecedores' %}">Voltar</a>
+
+{% endblock %}

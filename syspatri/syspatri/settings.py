@@ -137,3 +137,17 @@ AUTH_USER_MODEL = 'core.Usuario' # Adicione esta linha para configurar o modelo 
 
 # Configurações de login
 LOGIN_URL = 'login'  # Nome da URL de login definida no seu urls.py
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Para testes (exibe e-mails no console)
+# Ou configure um servidor de e-mail real:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.seuprovedor.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'seu-email@dominio.com'
+# EMAIL_HOST_PASSWORD = 'sua-senha'
+
+
+

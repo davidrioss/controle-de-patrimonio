@@ -1,0 +1,24 @@
+{% {% extends base.html %} %}
+
+{% block title %}Detalhes da Manutenção{% endblock %}
+
+{% block content %}
+
+    <p></p>
+
+    <h1>Detalhes da Manutenção</h1>
+
+    <ul class="list-group">
+
+        <p class="list-group-item list-group-item-secondary"><strong>Data:</strong> {{ manutencao.data_inicio }}</p>
+        <p class="list-group-item"><strong>Bem:</strong> {{ manutencao.bem }}</p>
+        <p class="list-group-item"><strong>Responsável:</strong> {{ manutencao.responsavel }}</p>
+        <p class="list-group-item"><strong>Valor:</strong> R$ {{ manutencao.departamento }}</p>
+        <p class="list-group-item"><strong>Descrição:</strong> {{ manutencao.observacao }}</p>
+        <p class="list-group-item"><strong>Data de Conclusão:</strong> {{ manutencao.data_fim }}</p>
+    </ul>
+
+    <a class="btn btn-success" href"{% url 'atualizar_manutencao' manutencao.pk %}">Editar Manutenção</a>
+    <a class="btn btn-danger" href"{% url 'listar_manutencoes' %}">Voltar</a>
+
+{% endblock %}

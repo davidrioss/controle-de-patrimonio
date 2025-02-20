@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Auditoria{% endblock %}
+
+{% block content %}
+    <h2>Registrar Auditoria</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a class="btn btn-danger" href="{% url 'listar_auditorias' %}">Voltar</a>
+    </form>
+{% endblock %}

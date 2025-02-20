@@ -1,0 +1,93 @@
+/* Estilos personalizados */
+.sidebar {
+    background-color: #343a40;
+    min-height: 100vh;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    overflow-y: auto;
+    transition: width 0.3s ease-in-out;
+    padding-top: 10px;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+/* Links do menu */
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    transition: background 0.3s;
+}
+
+.sidebar .nav-link.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
+
+/* Esconde os textos quando recolhido */
+.sidebar.collapsed .nav-link span {
+    display: none;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+}
+
+/* Botão de alternar sidebar */
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Ajuste do conteúdo principal */
+.main-content {
+    margin-left: 250px;
+    margin-top: 56px;
+    padding: 20px;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* Quando a sidebar está recolhida */
+.sidebar.collapsed + .main-content {
+    margin-left: 60px;
+}
+
+/* Rodapé */
+.footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+    .sidebar .nav-link span {
+        display: none;
+    }
+    .main-content {
+        margin-left: 60px;
+    }
+}
+
+.navbar-brand {
+    margin-left: 15px; /* Ajuste fino para alinhar melhor */
+}
+
+.sidebar.collapsed + .navbar .navbar-brand {
+    margin-left: 60px; /* Ajuste para quando a sidebar estiver recolhida */
+}

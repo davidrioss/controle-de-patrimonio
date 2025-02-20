@@ -35,13 +35,13 @@ class Manutencao(models.Model):
 
 
 class Auditoria(models.Model):
-    bem = models.ForeignKey(Bem, on_delete=models.CASCADE, verbose_name="Bem")
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, verbose_name="Departamento")
     data = models.DateField(auto_now_add=True, verbose_name="Data da Auditoria")
     responsavel = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, verbose_name="Responsável")
     observacao = models.TextField(verbose_name="Observação")
 
     def __str__(self):
-        return f"Auditoria de {self.bem.nome} em {self.data}"
+        return f"Auditoria de {self.departamento.nome} em {self.data}"
 
     class Meta:
         verbose_name = "Auditoria"

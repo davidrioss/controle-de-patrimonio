@@ -5,6 +5,7 @@ from patrimonio.models import Departamento  # Importando Departamento de patrimo
 class Usuario(AbstractUser):
     departamento = models.ForeignKey(Departamento, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Departamento")
     cargo = models.CharField(max_length=100, blank=True, null=True, verbose_name="Cargo")
+    gerente = models.BooleanField(default=False, verbose_name="Gerente")
 
     # Adicione related_name único para evitar conflitos
     groups = models.ManyToManyField(

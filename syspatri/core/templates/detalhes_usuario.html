@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Usuário{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mt-5">Detalhes do Usuário</h1>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ usuario.first_name }} {{ usuario.last_name }}</h5>
+                    <p class="card-text">Cargo: {{ usuario.cargo }}</p>
+                    <p class="card-text">E-mail: {{ usuario.email }}</p>
+                    <p class="card-text">Departamento: {{ usuario.departamento }}</p>
+                    <p class="card-text">Data de Cadastro: {{ usuario.data_cadastro }}</p>
+                    <p class="card-text">Último Acesso: {{ usuario.last_login }}</p>
+                    <p class="card-text">Gestor: {% if usuario.gerente %} Sim {% else %} Não {% endif %}</p>
+                    <a class="btn btn-primary" href="{% url 'listar_usuarios' %}">Voltar</a>
+                    <a href="{% url 'atualizar_usuario' usuario.id %}" class="btn btn-success">Editar</a>
+                    <a href="{% url 'excluir_usuario' usuario.id %}" class="btn btn-danger">Excluir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

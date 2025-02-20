@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Bem{% endblock %}
+
+{% block content %}
+    <p></p>
+    
+    <h2>Detalhes do Bem</h2>
+
+    <ul class="list-group">
+        <p class="list-group-item list-group-item-secondary"><strong>Nome:</strong> {{ bem.nome }}</p>
+        <p class="list-group-item"><strong>RFID:</strong> {{ bem.rfid }}</p>
+        <p class="list-group-item"><strong>Status:</strong> {{ bem.status }}</p>
+        <p class="list-group-item"><strong>Departamento:</strong> {{ bem.departamento }}</p>
+        <p class="list-group-item"><strong>Categoria:</strong> {{ bem.categoria }}</p>
+        <p class="list-group-item"><strong>Descrição:</strong> {{ bem.descricao }}</p>
+        <p class="list-group-item"><strong>Valor:</strong> R$ {{ bem.valor }}</p>
+        <p class="list-group-item"><strong>Data de Aquisição:</strong> {{ bem.data_aquisicao }}</p>
+        <p class="list-group-item"><strong>Fornecedor:</strong> {{ bem.fornecedor }}</p>
+    </ul>
+
+    <a class="btn btn-success" href="{% url 'atualizar_bem' bem.pk %}">Editar Bem</a>
+    <a class="btn btn-danger" href="{% url 'listar_bens' %}">Voltar</a>
+
+{% endblock %}

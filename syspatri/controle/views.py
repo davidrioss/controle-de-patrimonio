@@ -18,7 +18,7 @@ def listar_movimentacoes(request):
     paginator = Paginator(movimentacoes, 20)  # Exibe 20 movimentações por página
     page_number = request.GET.get('page')  # Obtém o número da página atual
     page_obj = paginator.get_page(page_number)  # Obtém as movimentações para a página atual
-    return render(request, 'controle/listar_movimentacoes.html', {'page_obj': page_obj})
+    return render(request, 'listar_movimentacoes.html', {'page_obj': page_obj})
 
 @login_required
 def adicionar_movimentacao(request):
@@ -33,7 +33,7 @@ def adicionar_movimentacao(request):
             return redirect('listar_movimentacoes')
     else:
         form = MovimentacaoForm()
-    return render(request, 'controle/adicionar_movimentacao.html', {'form': form})
+    return render(request, 'adicionar_movimentacao.html', {'form': form})
 
 @login_required
 def atualizar_movimentacao(request, pk):
@@ -49,7 +49,7 @@ def atualizar_movimentacao(request, pk):
             return redirect('listar_movimentacoes')
     else:
         form = MovimentacaoForm(instance=movimentacao)
-    return render(request, 'controle/atualizar_movimentacao.html', {'form': form, 'movimentacao': movimentacao})
+    return render(request, 'atualizar_movimentacao.html', {'form': form, 'movimentacao': movimentacao})
 
 @login_required
 def detalhes_movimentacao(request, pk):
@@ -57,7 +57,7 @@ def detalhes_movimentacao(request, pk):
     View para exibir detalhes de uma movimentação.
     """
     movimentacao = get_object_or_404(Movimentacao, pk=pk)
-    return render(request, 'controle/detalhes_movimentacao.html', {'movimentacao': movimentacao})
+    return render(request, 'detalhes_movimentacao.html', {'movimentacao': movimentacao})
 
 @login_required
 def excluir_movimentacao(request, pk):
@@ -81,7 +81,7 @@ def listar_manutencoes(request):
     paginator = Paginator(manutencoes, 20)  # Exibe 20 manutenções por página
     page_number = request.GET.get('page')  # Obtém o número da página atual
     page_obj = paginator.get_page(page_number)  # Obtém as manutenções para a página atual
-    return render(request, 'controle/listar_manutencoes.html', {'page_obj': page_obj})
+    return render(request, 'listar_manutencoes.html', {'page_obj': page_obj})
 
 @login_required
 def adicionar_manutencao(request):
@@ -96,7 +96,7 @@ def adicionar_manutencao(request):
             return redirect('listar_manutencoes')
     else:
         form = ManutencaoForm()
-    return render(request, 'controle/adicionar_manutencao.html', {'form': form})
+    return render(request, 'adicionar_manutencao.html', {'form': form})
 
 @login_required
 def atualizar_manutencao(request, pk):
@@ -112,7 +112,7 @@ def atualizar_manutencao(request, pk):
             return redirect('listar_manutencoes')
     else:
         form = ManutencaoForm(instance=manutencao)
-    return render(request, 'controle/atualizar_manutencao.html', {'form': form, 'manutencao': manutencao})
+    return render(request, 'atualizar_manutencao.html', {'form': form, 'manutencao': manutencao})
 
 @login_required
 def detalhes_manutencao(request, pk):
@@ -120,7 +120,7 @@ def detalhes_manutencao(request, pk):
     View para exibir detalhes de uma manutenção.
     """
     manutencao = get_object_or_404(Manutencao, pk=pk)
-    return render(request, 'controle/detalhes_manutencao.html', {'manutencao': manutencao})
+    return render(request, 'detalhes_manutencao.html', {'manutencao': manutencao})
 
 @login_required
 def excluir_manutencao(request, pk):
@@ -144,7 +144,7 @@ def listar_auditorias(request):
     paginator = Paginator(auditorias, 20)  # Exibe 20 auditorias por página
     page_number = request.GET.get('page')  # Obtém o número da página atual
     page_obj = paginator.get_page(page_number)  # Obtém as auditorias para a página atual
-    return render(request, 'controle/listar_auditorias.html', {'page_obj': page_obj})
+    return render(request, 'listar_auditorias.html', {'page_obj': page_obj})
 
 @login_required
 def adicionar_auditoria(request):
@@ -159,7 +159,7 @@ def adicionar_auditoria(request):
             return redirect('listar_auditorias')
     else:
         form = AuditoriaForm()
-    return render(request, 'controle/adicionar_auditoria.html', {'form': form})
+    return render(request, 'adicionar_auditoria.html', {'form': form})
 
 @login_required
 def atualizar_auditoria(request, pk):
@@ -175,7 +175,7 @@ def atualizar_auditoria(request, pk):
             return redirect('listar_auditorias')
     else:
         form = AuditoriaForm(instance=auditoria)
-    return render(request, 'controle/atualizar_auditoria.html', {'form': form, 'auditoria': auditoria})
+    return render(request, 'atualizar_auditoria.html', {'form': form, 'auditoria': auditoria})
 
 @login_required
 def detalhes_auditoria(request, pk):
@@ -183,7 +183,7 @@ def detalhes_auditoria(request, pk):
     View para exibir detalhes de uma auditoria.
     """
     auditoria = get_object_or_404(Auditoria, pk=pk)
-    return render(request, 'controle/detalhes_auditoria.html', {'auditoria': auditoria})
+    return render(request, 'detalhes_auditoria.html', {'auditoria': auditoria})
 
 @login_required
 def excluir_auditoria(request, pk):

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Usuário{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Editar Usuário</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <small class="form-text text-muted">Deixe o campo de senha em branco para manter a senha atual.</small>
+            <div>
+            <button type="submit" class="btn btn-success">Salvar Alterações</button>
+            <a class="btn btn-danger" href="{% url 'listar_usuarios' %}">Voltar</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

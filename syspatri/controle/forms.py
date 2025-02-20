@@ -34,12 +34,7 @@ class ManutencaoForm(forms.ModelForm):
 class AuditoriaForm(forms.ModelForm):
     class Meta:
         model = Auditoria
-        fields = ['bem', 'responsavel', 'observacao']
+        fields = ['departamento', 'responsavel', 'observacao']
         widgets = {
             'observacao': forms.Textarea(attrs={'rows': 3}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Filtra os bens ativos
-        self.fields['bem'].queryset = Bem.objects.filter(status='ativo')

@@ -16,7 +16,7 @@ def listar_bens(request):
     paginator = Paginator(bens, 20)  # Exibe 20 bens por página
     page_number = request.GET.get('page')  # Obtém o número da página atual
     page_obj = paginator.get_page(page_number)  # Obtém os bens para a página atual
-    return render(request, 'patrimonio/listar_bens.html', {'page_obj': page_obj})
+    return render(request, 'listar_bens.html', {'page_obj': page_obj})
 
 @login_required
 def adicionar_bem(request):
@@ -31,7 +31,7 @@ def adicionar_bem(request):
             return redirect('listar_bens')
     else:
         form = BemForm()
-    return render(request, 'patrimonio/adicionar_bem.html', {'form': form})
+    return render(request, 'adicionar_bem.html', {'form': form})
 
 @login_required
 def atualizar_bem(request, pk):
@@ -47,7 +47,7 @@ def atualizar_bem(request, pk):
             return redirect('listar_bens')
     else:
         form = BemForm(instance=bem)
-    return render(request, 'patrimonio/atualizar_bem.html', {'form': form, 'bem': bem})
+    return render(request, 'atualizar_bem.html', {'form': form, 'bem': bem})
 
 @login_required
 def detalhes_bem(request, pk):
@@ -55,7 +55,7 @@ def detalhes_bem(request, pk):
     View para exibir detalhes de um bem.
     """
     bem = get_object_or_404(Bem, pk=pk)
-    return render(request, 'patrimonio/detalhes_bem.html', {'bem': bem})
+    return render(request, 'detalhes_bem.html', {'bem': bem})
 
 @login_required
 def excluir_bem(request, pk):
@@ -79,7 +79,7 @@ def listar_categorias(request):
     paginator = Paginator(categorias, 20)  # Exibe 20 categorias por página
     page_number = request.GET.get('page')  # Obtém o número da página atual
     page_obj = paginator.get_page(page_number)  # Obtém as categorias para a página atual
-    return render(request, 'patrimonio/listar_categorias.html', {'page_obj': page_obj})
+    return render(request, 'listar_categorias.html', {'page_obj': page_obj})
 
 @login_required
 def adicionar_categoria(request):
@@ -94,7 +94,7 @@ def adicionar_categoria(request):
             return redirect('listar_categorias')
     else:
         form = CategoriaForm()
-    return render(request, 'patrimonio/adicionar_categoria.html', {'form': form})
+    return render(request, 'adicionar_categoria.html', {'form': form})
 
 @login_required
 def atualizar_categoria(request, pk):
@@ -110,7 +110,7 @@ def atualizar_categoria(request, pk):
             return redirect('listar_categorias')
     else:
         form = CategoriaForm(instance=categoria)
-    return render(request, 'patrimonio/atualizar_categoria.html', {'form': form, 'categoria': categoria})
+    return render(request, 'atualizar_categoria.html', {'form': form, 'categoria': categoria})
 
 @login_required
 def detalhes_categoria(request, pk):
@@ -118,7 +118,7 @@ def detalhes_categoria(request, pk):
     View para exibir detalhes de uma categoria.
     """
     categoria = get_object_or_404(Categoria, pk=pk)
-    return render(request, 'patrimonio/detalhes_categoria.html', {'categoria': categoria})
+    return render(request, 'detalhes_categoria.html', {'categoria': categoria})
 
 @login_required
 def excluir_categoria(request, pk):
@@ -142,7 +142,7 @@ def listar_departamentos(request):
     paginator = Paginator(departamentos, 20)  # Exibe 20 departamentos por página
     page_number = request.GET.get('page')  # Obtém o número da página atual
     page_obj = paginator.get_page(page_number)  # Obtém os departamentos para a página atual
-    return render(request, 'patrimonio/listar_departamentos.html', {'page_obj': page_obj})
+    return render(request, 'listar_departamentos.html', {'page_obj': page_obj})
 
 @login_required
 def adicionar_departamento(request):
@@ -157,7 +157,7 @@ def adicionar_departamento(request):
             return redirect('listar_departamentos')
     else:
         form = DepartamentoForm()
-    return render(request, 'patrimonio/adicionar_departamento.html', {'form': form})
+    return render(request, 'adicionar_departamento.html', {'form': form})
 
 @login_required
 def atualizar_departamento(request, pk):
@@ -173,7 +173,7 @@ def atualizar_departamento(request, pk):
             return redirect('listar_departamentos')
     else:
         form = DepartamentoForm(instance=departamento)
-    return render(request, 'patrimonio/atualizar_departamento.html', {'form': form, 'departamento': departamento})
+    return render(request, 'atualizar_departamento.html', {'form': form, 'departamento': departamento})
 
 @login_required
 def detalhes_departamento(request, pk):
@@ -181,7 +181,7 @@ def detalhes_departamento(request, pk):
     View para exibir detalhes de um departamento.
     """
     departamento = get_object_or_404(Departamento, pk=pk)
-    return render(request, 'patrimonio/detalhes_departamento.html', {'departamento': departamento})
+    return render(request, 'detalhes_departamento.html', {'departamento': departamento})
 
 @login_required
 def excluir_departamento(request, pk):
@@ -205,7 +205,7 @@ def listar_fornecedores(request):
     paginator = Paginator(fornecedores, 20)  # Exibe 20 fornecedores por página
     page_number = request.GET.get('page')  # Obtém o número da página atual
     page_obj = paginator.get_page(page_number)  # Obtém os fornecedores para a página atual
-    return render(request, 'patrimonio/listar_fornecedores.html', {'page_obj': page_obj})
+    return render(request, 'listar_fornecedores.html', {'page_obj': page_obj})
 
 @login_required
 def adicionar_fornecedor(request):
@@ -220,7 +220,7 @@ def adicionar_fornecedor(request):
             return redirect('listar_fornecedores')
     else:
         form = FornecedorForm()
-    return render(request, 'patrimonio/adicionar_fornecedor.html', {'form': form})
+    return render(request, 'adicionar_fornecedor.html', {'form': form})
 
 @login_required
 def atualizar_fornecedor(request, pk):
@@ -236,7 +236,7 @@ def atualizar_fornecedor(request, pk):
             return redirect('listar_fornecedores')
     else:
         form = FornecedorForm(instance=fornecedor)
-    return render(request, 'patrimonio/atualizar_fornecedor.html', {'form': form, 'fornecedor': fornecedor})
+    return render(request, 'atualizar_fornecedor.html', {'form': form, 'fornecedor': fornecedor})
 
 @login_required
 def detalhes_fornecedor(request, pk):
@@ -244,7 +244,7 @@ def detalhes_fornecedor(request, pk):
     View para exibir detalhes de um fornecedor.
     """
     fornecedor = get_object_or_404(Fornecedor, pk=pk)
-    return render(request, 'patrimonio/detalhes_fornecedor.html', {'fornecedor': fornecedor})
+    return render(request, 'detalhes_fornecedor.html', {'fornecedor': fornecedor})
 
 @login_required
 def excluir_fornecedor(request, pk):
