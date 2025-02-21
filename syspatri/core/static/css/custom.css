@@ -91,3 +91,9 @@
 .sidebar.collapsed + .navbar .navbar-brand {
     margin-left: 60px; /* Ajuste para quando a sidebar estiver recolhida */
 }
+
+.card-text.display-4 {
+    font-size: calc(1.5rem + 1.5vw); /* Ajusta o tamanho da fonte dinamicamente */
+    white-space: nowrap; /* Impede que o texto quebre para a próxima linha */
+
+}

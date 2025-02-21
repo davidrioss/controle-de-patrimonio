@@ -12,6 +12,7 @@ from .forms import UsuarioCreationForm, UsuarioChangeForm, LoginForm
 from patrimonio.models import Bem, Categoria, Departamento, Fornecedor
 from controle.models import Movimentacao, Manutencao, Auditoria
 from datetime import datetime, timedelta
+import json
 
 # -----------------------------views relacionadas ao dashboard-----------------------------
 
@@ -41,6 +42,22 @@ def dashboard(request):
         manutencoes_por_mes.append(total)
     meses.reverse()
     manutencoes_por_mes.reverse()
+        
+    # Dados para o gráfico de histórico de manutenções
+    meses = []
+    manutencoes_custo_por_mes = []
+    for i in range(12):
+        mes = datetime.now() - timedelta(days=30 * i)
+        total_custo = Manutencao.objects.filter(
+            data_inicio__month=mes.month, 
+            data_inicio__year=mes.year
+        ).aggregate(Sum('custo'))['custo__sum'] or 0  # Soma dos custos, se não houver, retorna 0
+        
+        meses.append(mes.strftime('%b'))  # Nome abreviado do mês (ex: Jan, Fev)
+        manutencoes_custo_por_mes.append(float(total_custo))  # Converte para float
+
+    meses.reverse()
+    manutencoes_custo_por_mes.reverse()
 
     # Manutenções recentes
     manutencoes_recentes = Manutencao.objects.order_by('-data_inicio')[:10]
@@ -56,9 +73,12 @@ def dashboard(request):
         'bens_por_categoria': list(bens_por_categoria),
         'meses': meses,
         'manutencoes_por_mes': manutencoes_por_mes,
+        'manutencoes_custo_por_mes': manutencoes_custo_por_mes,  # Agora só contém floats
         'manutencoes_recentes': manutencoes_recentes,
     }
+
     return render(request, 'dashboard.html', context)
+
 
 # -----------------------------views relacionadas aos usuários-----------------------------
 

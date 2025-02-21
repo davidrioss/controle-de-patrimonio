@@ -6,14 +6,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="mt-5">Dashboard</h1>
-            <hr>
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Bem-vindo, {{ request.user.get_full_name }}</h5>
                     <p class="card-text">Aqui estão as principais métricas do sistema.</p>
                 </div>
             </div>
+            <hr>
+            <h1 class="mt-3">Dashboard</h1>
+            <hr>
         </div>
     </div>
 
@@ -47,7 +48,7 @@
             <div class="card text-white bg-danger mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Valor do Patrimônio</h5>
-                    <p class="card-text display-5 ">R$ {{ valor_total_patrimonio|floatformat:2 }}</p>
+                    <p class="card-text display-4 " id="valor-patrimonio">R$ {{ valor_total_patrimonio|floatformat:2 }}</p>
                 </div>
             </div>
         </div>
@@ -68,6 +69,22 @@
                 <div class="card-body">
                     <h5 class="card-title">Bens por Categoria</h5>
                     <canvas id="graficoBensPorCategoria"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Histórico de Manutenções</h5>
+                    <canvas id="graficoHistoricoManutencoes"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Custo de Manutenções</h5>
+                    <canvas id="graficoCustoManutencoes"></canvas>
                 </div>
             </div>
         </div>
@@ -121,12 +138,27 @@
             datasets: [{
                 label: 'Quantidade de Bens',
                 data: {{ bens_por_departamento|safe }},
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
                 borderWidth: 1
             }]
         },
         options: {
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true
@@ -138,7 +170,7 @@
     // Gráfico de Bens por Categoria
     const ctxBensPorCategoria = document.getElementById('graficoBensPorCategoria').getContext('2d');
     new Chart(ctxBensPorCategoria, {
-        type: 'pie',
+        type: 'bar',
         data: {
             labels: {{ categorias|safe }},
             datasets: [{
@@ -165,9 +197,9 @@
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         }
@@ -195,5 +227,49 @@
             }
         }
     });
+
+    // Gráfico de Custo de Manutenções
+    const ctxCustoManutencoes = document.getElementById('graficoCustoManutencoes').getContext('2d');
+    new Chart(ctxCustoManutencoes, {
+        type: 'line',
+        data: {
+            labels: {{ meses|safe }},
+            datasets: [{
+                label: 'Custo Mensal em R$',
+                data: {{ manutencoes_custo_por_mes|safe }},
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 </script>
+<script>
+    // Ajusta o tamanho da fonte do valor do patrimônio
+    function ajustarFonte() {
+        const elemento = document.getElementById('valor-patrimonio'); // Seleciona o elemento
+        const container = elemento.parentElement; // Seleciona o container pai
+        const containerWidth = container.offsetWidth; // Largura do container
+        const texto = elemento.textContent; // Texto do elemento
+        let fontSize = parseFloat(window.getComputedStyle(elemento).fontSize); // Tamanho inicial da fonte
+
+        // Reduz o tamanho da fonte até que o texto caiba no container
+        while (elemento.scrollWidth > containerWidth && fontSize > 10) { // 10px é o tamanho mínimo
+            fontSize -= 1; // Reduz o tamanho da fonte em 1px
+            elemento.style.fontSize = fontSize + 'px';
+        }
+    }
+
+    // Executa a função ao carregar a página e ao redimensionar a janela
+    window.addEventListener('load', ajustarFonte);
+    window.addEventListener('resize', ajustarFonte);
+</script>
+
 {% endblock %}

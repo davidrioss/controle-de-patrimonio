@@ -118,7 +118,12 @@ def detalhes_categoria(request, pk):
     View para exibir detalhes de uma categoria.
     """
     categoria = get_object_or_404(Categoria, pk=pk)
-    return render(request, 'detalhes_categoria.html', {'categoria': categoria})
+    bens = Bem.objects.filter(categoria=categoria)  # Filtra os bens por categoria
+    context = {
+        'categoria': categoria,
+        'bens': bens,  # Passa os bens para o template
+    }
+    return render(request, 'detalhes_categoria.html', context)
 
 @login_required
 def excluir_categoria(request, pk):
@@ -181,7 +186,12 @@ def detalhes_departamento(request, pk):
     View para exibir detalhes de um departamento.
     """
     departamento = get_object_or_404(Departamento, pk=pk)
-    return render(request, 'detalhes_departamento.html', {'departamento': departamento})
+    bens = Bem.objects.filter(departamento=departamento)  # Filtra os bens do departamento
+    context = {
+        'departamento': departamento,
+        'bens': bens,  # Passa os bens para o template
+    }
+    return render(request, 'detalhes_departamento.html', context)
 
 @login_required
 def excluir_departamento(request, pk):

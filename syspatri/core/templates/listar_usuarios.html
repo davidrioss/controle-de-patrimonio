@@ -10,25 +10,30 @@
 
     <h2 class="mb-4">Lista de Usuários</h2>
 
-    <ul class="list-group">
-        {% for usuario in page_obj %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>{{ usuario.first_name }} {{ usuario.last_name }}</strong>
-                </div>
-                <div>
-                    <a class="btn btn-secondary" href="{% url 'detalhes_usuario' usuario.pk %}">Detalhes</a>
-                    <a class="btn btn-secondary" href="{% url 'atualizar_usuario' usuario.pk %}">Editar</a>
-                    <a class="btn btn-danger" href="{% url 'excluir_usuario' usuario.pk %}" onclick="return confirm('Tem certeza que deseja excluir este usuario?');">Excluir</a>
-                </div>
-            </li>
-        {% endfor %}
-    
-    </ul>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in page_obj %}
+                <tr>
+                    <td><strong>{{ usuario.first_name }} {{ usuario.last_name }}</strong></td>
+                    <td>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'detalhes_usuario' usuario.pk %}">Detalhes</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'atualizar_usuario' usuario.pk %}">Editar</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'excluir_usuario' usuario.pk %}" onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     
     <!-- Links de paginação -->
     <div class="pagination align-items-center mt-4 d-flex justify-content-center">
-        <span class="step-links text-center ">
+        <span class="step-links text-center">
             {% if page_obj.has_previous %}
                 <a class="btn btn-secondary btn-sm" href="?page=1">Primeira</a>
                 <a class="btn btn-secondary btn-sm" href="?page={{ page_obj.previous_page_number }}">Anterior</a>

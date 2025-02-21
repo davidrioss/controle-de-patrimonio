@@ -1,4 +1,4 @@
-{% extends base.html %}
+{% extends 'base.html' %}
 
 {% block title %}Detalhes do Departamento{% endblock %}
 
@@ -15,5 +15,38 @@
 
     <a class="btn btn-success" href="{% url 'atualizar_departamento' departamento.pk %}">Editar Departamento</a>
     <a class="btn btn-danger" href="{% url 'listar_departamentos' %}">Voltar</a>
+
+    <!-- Lista de Bens do Departamento -->
+    <h3 class="mb-4 mt-4">Bens Associados</h3>
+    {% if bens %}
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>RFID</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th class="w-auto">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bem in bens %}
+                    <tr>
+                        <td><strong>{{ bem.rfid }}</strong></td>
+                        <td>{{ bem.nome }}</td>
+                        <td>{{ bem.categoria.nome }}</td>
+                        <td class="w-auto">
+                            <a class="btn btn-secondary btn-sm" href="{% url 'detalhes_bem' bem.pk %}">Detalhes</a>
+                            <a class="btn btn-secondary btn-sm" href="{% url 'atualizar_bem' bem.pk %}">Editar</a>
+                            <a class="btn btn-danger btn-sm" href="{% url 'excluir_bem' bem.pk %}" onclick="return confirm('Tem certeza que deseja excluir este bem?');">Excluir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Nenhum bem associado a este departamento.
+        </div>
+    {% endif %}
 
 {% endblock %}

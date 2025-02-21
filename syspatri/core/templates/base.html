@@ -97,9 +97,6 @@
                     {% for message in messages %}
                         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                             {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                         </div>
                     {% endfor %}
                 </div>
@@ -110,7 +107,7 @@
     </div>
 
     <!-- Rodapé -->
-    <footer class="footer mt-auto py-3 bg-dark text-center text-white">
+    <footer class="footer mt-auto py-3 bg-dark shadow text-center text-white">
         <p class="mb-0">&copy; 2025 - Controle de Patrimônio por David Rios.</p>
     </footer>
 

@@ -10,20 +10,28 @@
 
     <h2 class="mb-4">Lista de Auditorias</h2>
 
-    <ul class="list-group">
-        {% for auditoria in page_obj %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>{{ auditoria.data }}</strong> - {{ auditoria.bem.nome }}
-                </div>
-                <div>
-                    <a class="btn btn-secondary" href="{% url 'detalhes_auditoria' auditoria.pk %}">Detalhes</a>
-                    <a class="btn btn-secondary" href="{% url 'atualizar_auditoria' auditoria.pk %}">Editar</a>
-                    <a class="btn btn-danger" href="{% url 'excluir_auditoria' auditoria.pk %}" onclick="return confirm('Tem certeza que deseja excluir esta auditoria?');">Excluir</a>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Departamento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for auditoria in page_obj %}
+                <tr>
+                    <td><strong>{{ auditoria.data }}</strong></td>
+                    <td>{{ auditoria.departamento.nome }}</td>
+                    <td>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'detalhes_auditoria' auditoria.pk %}">Detalhes</a>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'atualizar_auditoria' auditoria.pk %}">Editar</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'excluir_auditoria' auditoria.pk %}" onclick="return confirm('Tem certeza que deseja excluir esta auditoria?');">Excluir</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     
     <!-- Links de paginação -->
     <div class="pagination align-items-center mt-4 d-flex justify-content-center">
