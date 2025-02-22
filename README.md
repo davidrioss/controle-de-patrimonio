@@ -10,6 +10,7 @@ Este é um sistema de gestão de patrimônio desenvolvido em Django para gerenci
 - **Gestão de Fornecedores**: Cadastro de fornecedores dos bens.
 - **Dashboard**: Visualização de métricas e gráficos relacionados ao patrimônio.
 - **Autenticação e Autorização**: Controle de acesso com autenticação de usuários e permissões.
+- **Registro de auditorias, movimentações e manutenções.**
 
 ## Tecnologias Utilizadas
 
