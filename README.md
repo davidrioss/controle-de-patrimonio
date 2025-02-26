@@ -1,4 +1,4 @@
-# SISPATRI - Sistema de Gestão de Patrimônio
+# SYSPATRI - Sistema de Gestão de Patrimônio
 
 Este é um sistema de gestão de patrimônio desenvolvido em Django para gerenciar bens, categorias, departamentos e fornecedores. O sistema permite o cadastro, edição, exclusão e visualização de informações relacionadas ao patrimônio de uma organização.
 
@@ -10,6 +10,7 @@ Este é um sistema de gestão de patrimônio desenvolvido em Django para gerenci
 - **Gestão de Fornecedores**: Cadastro de fornecedores dos bens.
 - **Dashboard**: Visualização de métricas e gráficos relacionados ao patrimônio.
 - **Autenticação e Autorização**: Controle de acesso com autenticação de usuários e permissões.
+- **Registro de auditorias, movimentações e manutenções.**
 
 ## Tecnologias Utilizadas
 
