@@ -262,7 +262,7 @@
 
         // Reduz o tamanho da fonte até que o texto caiba no container
         while (elemento.scrollWidth > containerWidth && fontSize > 10) { // 10px é o tamanho mínimo
-            fontSize -= 1; // Reduz o tamanho da fonte em 1px
+            fontSize -= 10; // Reduz o tamanho da fonte em 10px
             elemento.style.fontSize = fontSize + 'px';
         }
     }
